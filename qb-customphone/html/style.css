@@ -1,0 +1,990 @@
+/* QB-Core Phone System CSS */
+/* Complete copy-pastable CSS for FiveM phone interface */
+
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Phone container and screen */
+.phone-container {
+    width: 375px;
+    height: 812px;
+    background: #000;
+    border-radius: 40px;
+    padding: 8px;
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.1);
+    position: relative;
+    transform: scale(1);
+    transition: transform 0.3s ease;
+}
+
+.phone-container:hover {
+    transform: scale(1.02);
+}
+
+.phone-screen {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, #1a1a1a 0%, #2d2d2d 100%);
+    border-radius: 32px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+/* Notch design */
+.notch {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 140px;
+    height: 30px;
+    background: #000;
+    border-radius: 0 0 20px 20px;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.notch::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 4px;
+    background: #333;
+    border-radius: 2px;
+}
+
+/* Status bar */
+.status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 25px 10px;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    position: relative;
+    z-index: 999;
+}
+
+.time {
+    font-size: 16px;
+    font-weight: 700;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.battery-wifi {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.battery-wifi span {
+    font-size: 12px;
+    opacity: 0.9;
+}
+
+/* App screens management */
+.app-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    flex-direction: column;
+    opacity: 0;
+    transform: translateX(20px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.app-screen.active {
+    display: flex;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Home screen */
+.home-screen {
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><radialGradient id="g"><stop offset="0%" stop-color="%23ff6b6b"/><stop offset="100%" stop-color="%234ecdc4"/></radialGradient></defs><rect width="100" height="100" fill="url(%23g)"/></svg>');
+    background-size: cover;
+    background-position: center;
+    padding: 60px 25px 100px;
+    position: relative;
+}
+
+.home-screen::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(1px);
+    z-index: 1;
+}
+
+.app-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+    margin-top: 40px;
+    position: relative;
+    z-index: 2;
+}
+
+/* App icons */
+.app-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.app-icon::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.app-icon:hover {
+    transform: scale(1.1) translateY(-2px);
+    box-shadow: 
+        0 12px 40px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.app-icon:hover::before {
+    left: 100%;
+}
+
+.app-icon:active {
+    transform: scale(0.95);
+}
+
+/* Specific app icon colors */
+.app-icon.phone { 
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    box-shadow: 0 8px 32px rgba(46, 204, 113, 0.3);
+}
+
+.app-icon.messages { 
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    box-shadow: 0 8px 32px rgba(52, 152, 219, 0.3);
+}
+
+.app-icon.contacts { 
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    box-shadow: 0 8px 32px rgba(231, 76, 60, 0.3);
+}
+
+.app-icon.settings { 
+    background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+    box-shadow: 0 8px 32px rgba(149, 165, 166, 0.3);
+}
+
+.app-icon.camera { 
+    background: linear-gradient(135deg, #9b59b6, #8e44ad);
+    box-shadow: 0 8px 32px rgba(155, 89, 182, 0.3);
+}
+
+.app-icon.gallery { 
+    background: linear-gradient(135deg, #f39c12, #e67e22);
+    box-shadow: 0 8px 32px rgba(243, 156, 18, 0.3);
+}
+
+.app-icon.bank { 
+    background: linear-gradient(135deg, #1abc9c, #16a085);
+    box-shadow: 0 8px 32px rgba(26, 188, 156, 0.3);
+}
+
+.app-icon.garage { 
+    background: linear-gradient(135deg, #34495e, #2c3e50);
+    box-shadow: 0 8px 32px rgba(52, 73, 94, 0.3);
+}
+
+/* App names */
+.app-name {
+    color: white;
+    font-size: 11px;
+    text-align: center;
+    margin-top: 8px;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    font-weight: 500;
+    letter-spacing: 0.3px;
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Dock */
+.dock {
+    position: absolute;
+    bottom: 30px;
+    left: 25px;
+    right: 25px;
+    height: 80px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(30px);
+    border-radius: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 
+        0 10px 40px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    z-index: 10;
+}
+
+.dock-app {
+    width: 50px;
+    height: 50px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.dock-app:hover {
+    transform: scale(1.2) translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* App headers */
+.app-header {
+    color: white;
+    padding: 50px 20px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 100;
+}
+
+.app-header::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.messages-header {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+.contacts-header {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+}
+
+.phone-header {
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+}
+
+.settings-header {
+    background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+}
+
+/* Header buttons */
+.back-btn, .action-btn {
+    font-size: 18px;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+    color: rgba(255, 255, 255, 0.9);
+    min-width: 36px;
+    text-align: center;
+}
+
+.back-btn:hover, .action-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    transform: scale(1.1);
+}
+
+.back-btn:active, .action-btn:active {
+    transform: scale(0.95);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.app-title {
+    font-size: 18px;
+    font-weight: 600;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    letter-spacing: 0.5px;
+}
+
+/* App content area */
+.app-content {
+    flex: 1;
+    background: #ffffff;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.app-content::-webkit-scrollbar {
+    width: 2px;
+}
+
+.app-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.app-content::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 1px;
+}
+
+/* Search bar */
+.search-bar {
+    padding: 15px 20px;
+    background: white;
+    border-bottom: 1px solid #e9ecef;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    backdrop-filter: blur(10px);
+}
+
+.search-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #dee2e6;
+    border-radius: 25px;
+    font-size: 14px;
+    background: #f8f9fa;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.search-input:focus {
+    border-color: #667eea;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    transform: translateY(-1px);
+}
+
+.search-input::placeholder {
+    color: #6c757d;
+}
+
+/* Messages app styles */
+.conversation {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #f1f3f5;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.conversation::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: transparent;
+    transition: background 0.2s ease;
+}
+
+.conversation:hover {
+    background: #f8f9fa;
+    transform: translateX(3px);
+}
+
+.conversation:hover::before {
+    background: #667eea;
+}
+
+.conversation:active {
+    background: #e9ecef;
+    transform: translateX(1px);
+}
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    margin-right: 15px;
+    flex-shrink: 0;
+    font-size: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border: 2px solid white;
+}
+
+.conversation-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.conversation-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.contact-name {
+    font-weight: 600;
+    color: #212529;
+    font-size: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.msg-time {
+    font-size: 12px;
+    color: #6c757d;
+    white-space: nowrap;
+    margin-left: 10px;
+}
+
+.last-message {
+    color: #6c757d;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.3;
+}
+
+.unread-badge {
+    width: 22px;
+    height: 22px;
+    background: linear-gradient(135deg, #dc3545, #c82333);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    margin-left: 10px;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* Contacts app styles */
+.contact {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #f1f3f5;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.contact::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: transparent;
+    transition: background 0.2s ease;
+}
+
+.contact:hover {
+    background: #f8f9fa;
+    transform: translateX(3px);
+}
+
+.contact:hover::before {
+    background: #e74c3c;
+}
+
+.contact:active {
+    background: #e9ecef;
+}
+
+.contact:last-child {
+    border-bottom: none;
+}
+
+.contact-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    margin-right: 15px;
+    flex-shrink: 0;
+    font-size: 14px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+    border: 2px solid white;
+}
+
+.contact-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.contact-number {
+    color: #6c757d;
+    font-size: 14px;
+    margin-top: 2px;
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+}
+
+/* Phone app styles */
+.number-display {
+    padding: 25px 20px;
+    text-align: center;
+    font-size: 28px;
+    font-weight: 300;
+    min-height: 80px;
+    background: white;
+    border-bottom: 1px solid #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+    letter-spacing: 2px;
+}
+
+.dialpad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 30px;
+    background: white;
+    justify-items: center;
+}
+
+.dial-btn {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    background: #f8f9fa;
+    border: none;
+    font-size: 28px;
+    font-weight: 300;
+    color: #212529;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+    user-select: none;
+}
+
+.dial-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(102, 126, 234, 0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.3s ease;
+}
+
+.dial-btn:hover {
+    background: #e9ecef;
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.dial-btn:active::before {
+    width: 100px;
+    height: 100px;
+}
+
+.dial-btn:active {
+    transform: scale(0.95);
+}
+
+.dial-letters {
+    font-size: 10px;
+    color: #6c757d;
+    margin-top: 2px;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+.call-actions {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    padding: 40px 30px;
+    background: white;
+}
+
+.call-btn {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    border: none;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.call-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    transform: scale(0);
+    transition: transform 0.3s ease;
+}
+
+.call-btn:hover::before {
+    transform: scale(1);
+}
+
+.call-btn.call {
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    box-shadow: 0 4px 20px rgba(46, 204, 113, 0.4);
+}
+
+.call-btn.end {
+    background: linear-gradient(135deg, #e74c3c, #c0392b);
+    box-shadow: 0 4px 20px rgba(231, 76, 60, 0.4);
+}
+
+.call-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+}
+
+.call-btn:active {
+    transform: scale(0.95);
+}
+
+/* Floating action button */
+.floating-btn {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 100;
+    border: none;
+}
+
+.floating-btn:hover {
+    transform: scale(1.1) translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+}
+
+.floating-btn:active {
+    transform: scale(0.95);
+}
+
+/* Utility classes */
+.hidden {
+    display: none !important;
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-in;
+}
+
+.fade-out {
+    animation: fadeOut 0.3s ease-out;
+}
+
+.slide-in-right {
+    animation: slideInRight 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.slide-out-right {
+    animation: slideOutRight 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+@keyframes slideInRight {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
+}
+
+@keyframes slideOutRight {
+    from { transform: translateX(0); }
+    to { transform: translateX(100%); }
+}
+
+@keyframes slideDown {
+    from { 
+        transform: translate(-50%, -100%);
+        opacity: 0;
+    }
+    to { 
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from { 
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
+    to { 
+        transform: translate(-50%, -100%);
+        opacity: 0;
+    }
+}
+
+/* Loading states */
+.loading {
+    position: relative;
+    overflow: hidden;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+/* Empty states */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 40px;
+    color: #6c757d;
+    text-align: center;
+    min-height: 300px;
+}
+
+.empty-state-icon {
+    font-size: 64px;
+    margin-bottom: 20px;
+    opacity: 0.5;
+}
+
+.empty-state h3 {
+    margin-bottom: 10px;
+    color: #495057;
+    font-weight: 600;
+}
+
+.empty-state p {
+    font-size: 14px;
+    line-height: 1.5;
+    max-width: 250px;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .phone-screen {
+        background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 100%);
+    }
+    
+    .app-content {
+        background: #1a1a1a;
+        color: #ffffff;
+    }
+    
+    .search-input {
+        background: #2d2d2d;
+        border-color: #404040;
+        color: white;
+    }
+    
+    .conversation, .contact {
+        border-bottom-color: #2d2d2d;
+    }
+    
+    .conversation:hover, .contact:hover {
+        background: #2d2d2d;
+    }
+    
+    .contact-name {
+        color: #ffffff;
+    }
+    
+    .number-display {
+        background: #1a1a1a;
+        color: #ffffff;
+    }
+    
+    .dialpad {
+        background: #1a1a1a;
+    }
+    
+    .dial-btn {
+        background: #2d2d2d;
+        color: #ffffff;
+    }
+    
+    .call-actions {
+        background: #1a1a1a;
+    }
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+    .phone-container {
+        width: 95vw;
+        height: 95vh;
+        max-width: 375px;
+        max-height: 812px;
+    }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .phone-container {
+        -webkit-font-smoothing: subpixel-antialiased;
+    }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Focus states for keyboard navigation */
+.app-icon:focus,
+.conversation:focus,
+.contact:focus,
+.dial-btn:focus,
+.call-btn:focus,
+.back-btn:focus,
+.action-btn:focus,
+.floating-btn:focus {
+    outline: 2px solid #667eea;
+    outline-offset: 2px;
+}
+
+/* Print styles */
+@media print {
+    body {
+        background: white;
+    }
+    
+    .phone-container {
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+}
